@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import SocialLogin from './SocialLogin/SocialLogin';
@@ -12,19 +12,24 @@ const Login = () => {
     const navigate = useNavigate();
     const location=useLocation()
     let from = location.state?.from?.pathname || "/";
-    
+    let errorElement;
     const [
         signInWithEmailAndPassword,
         user,
         loading,
         error,
     ] = useSignInWithEmailAndPassword(auth);
-
+    const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
     if (user) {
         navigate(from, { replace: true });
         // navigate('/home')
     }
 
+    if (error) {
+        errorElement=<div>
+        <p className="text-danger">Error: {error?.message}</p>
+      </div>
+  }
     const handleSubmit = event => {
         event.preventDefault();
         const email = emailRef.current.value
@@ -35,34 +40,39 @@ const Login = () => {
     const navigateRegister = () => {
         navigate('/register')
     }
+
+    const reseatPassword= async() => {
+        const email = emailRef.current.value
+        await sendPasswordResetEmail(email);
+          alert('Sent email');
+    }
     return (
 
 
         <div className="container w-50 ">
-            <h3 className="text-primary text-center mt-3">Please login</h3>
+            <h3 className="text-primary text-center mt-3 mb-5">Please login</h3>
             <div>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control ref={emailRef} type="email" placeholder="Enter email" required />
-                        <Form.Text className="text-muted">
-                            We'll never share your email with anyone else.
-                        </Form.Text>
+                    <Form.Group className="mb-3 " controlId="formBasicEmail">
+                        {/* <Form.Label>Email address</Form.Label> */}
+                        <Form.Control ref={emailRef} className="p-3" type="email" placeholder="Enter email" required />
+                      
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control ref={passwordRef} type="password" placeholder="Password" required />
+                        {/* <Form.Label>Password</Form.Label> */}
+                        <Form.Control className="p-3" ref={passwordRef} type="password" placeholder="Password" required />
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                        <Form.Check type="checkbox" label="Check me out" />
+                        <Form.Check type="checkbox" label="Accept Genius Car Terms and Condition" />
                     </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Submit
+                    <Button variant="primary" className=" w-50 mx-auto p-3 d-block mb-3" type="submit">
+                        Login
                     </Button>
                 </Form>
-
-                <p>New to Genius Car ? <button class="text-danger m-2" onClick={navigateRegister}>Please Register</button></p>
+                {errorElement}
+                <p>New to Genius Car ? <button class="text-primary m-2" onClick={navigateRegister}>Please Register</button></p>
+                <p>Forget Password ? <button class="text-primary m-2" onClick={reseatPassword}>Reseat password</button></p>
 
                 <SocialLogin></SocialLogin>
             </div>
