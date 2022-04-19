@@ -2,16 +2,23 @@ import React from 'react';
 import googleLogo from '../../../images/google.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-import {FaGithub} from 'react-icons/fa';
+import {FaGithub,FaFacebook} from 'react-icons/fa';
+import {FcGoogle} from 'react-icons/fc';
 import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../../firebase.init';
 import { useNavigate } from 'react-router-dom';
+import Loading from '../../Shared/Loading/Loading';
 
 const SocialLogin = () => {
     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
     const [signInWithGithub, user1, loading1, error1] = useSignInWithGithub(auth);
     const navigate = useNavigate();
     let errorElement;
+
+    if (loading || loading1) {
+        return <Loading></Loading>
+        
+    }
     if (error ||error1) {
             errorElement=<div>
             <p className="text-danger">Error: {error?.message} {error1?.message}</p>
@@ -32,26 +39,39 @@ const SocialLogin = () => {
                 <div style={{ height: '1px' }} className="bg-primary w-50"></div>
             </div>
             {errorElement}
-            <div >
-                <button
+
+
+            <div className="mt-2" >
+                <button 
                 onClick={()=>signInWithGoogle()}
-                className="btn btn-info w-50 d-block mx-auto">
-                    <p className=" my-auto" ><FontAwesomeIcon className="px-2 text-xl mr-12 " icon={faCoffee} size="2x" /><span className="text-xl mb-3">Google Sign In</span></p>
+                className=" bg-info d-flex justify-content-center align-items-center w-50 d-block rounded-md  mx-auto">
+                 <p className=" mx-5 mt-2 fs-3 fw-bold " >Facebook Sign In</p>
+                <FaFacebook className="" size="50px"/>
                 </button>
             </div>
+
+
             <div className="mt-2" >
                 <button 
                 onClick={()=>signInWithGithub()}
-                className=" bg-info w-50 d-block  mx-auto">
-                 <span className="text-2xl " >Github Sign In</span>
-                <FaGithub className="text-2xl ml-12 w-5 h-6"/>
+                className=" bg-info d-flex justify-content-center align-items-center w-50 d-block rounded-md  mx-auto">
+                 <p className=" mx-5 mt-2 fs-3 fw-bold " >Github Sign In</p>
+                <FaGithub className="" size="50px"/>
                 </button>
             </div>
-            <div className="mx-auto mt-2" >
-                <button className="btn btn-info w-50 d-block mx-auto">
-                    <p className=" my-auto" ><FontAwesomeIcon className="px-2 text-xl mr-12 " icon={faCoffee} size="2x" /><span className="text-xl mb-3">Facebook Sign In</span></p>
+
+
+            <div className="mt-2" >
+                <button 
+                onClick={()=>signInWithGoogle()}
+                className=" bg-info d-flex justify-content-center align-items-center w-50 d-block rounded-md  mx-auto">
+                 <p className=" mx-5 mt-2 fs-3 fw-bold " >Google Sign In</p>
+                <FcGoogle className="" size="50px"/>
                 </button>
             </div>
+
+
+           
 
             
         </div>

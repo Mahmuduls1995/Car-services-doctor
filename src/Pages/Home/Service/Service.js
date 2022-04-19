@@ -3,11 +3,14 @@ import {useNavigate} from 'react-router-dom'
 const Service = ({ service }) => {
     const {id, name, img, price, description } = service;
     const navigate=useNavigate();
+
     const navigateToServiceDetails = (id) => {
         navigate(`/service/${id}`)
     }
+    
+    
     return (
-
+            
         <section class="text-gray-600 body-font">
             <div class="container px-5 py-2  mx-auto">
                 <div class="xl:w-full md:w-full p-4">

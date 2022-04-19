@@ -4,44 +4,39 @@ import { Button, Container, Form, FormControl, Nav, Navbar, NavDropdown } from '
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link } from 'react-router-dom';
 import auth from '../../../firebase.init';
-import logo from '../../../images/logo.png'
+import logo from '../../../images/tutor.png'
 const Header = () => {
-    const [user] =useAuthState(auth)
+    const [user] = useAuthState(auth)
 
-    const handleSignOut= () => {
+    const handleSignOut = () => {
         signOut(auth)
     }
 
     return (
         <>
 
-            <Navbar collapseOnSelect  bg="primary" sticky="top" expand="lg">
+            <Navbar collapseOnSelect bg="primary" sticky="top" expand="lg">
                 <Container>
-                <Navbar.Brand as={Link} to="/">
-                        <img style={{ height: '50px' }} src={logo} alt="" />
+                    <Navbar.Brand as={Link} to="/">
+                        <img style={{ height: '50px',width:'150px' }} src={logo} alt="" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300 rounded" href="home#services">Services</Nav.Link>
-                            <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300 rounded" href="home#experts">Experts</Nav.Link>
-                            <NavDropdown className="text-white" title=" Dropdown" id="collasible-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item className="text-white" href="#action/3.4">Separated link</NavDropdown.Item>
-                            </NavDropdown>
+                        <Nav className="m-auto">
+                            <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300 rounded mx-2" href="home#services">Services</Nav.Link>
+                            <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300 rounded mx-2" href="home#experts">Experts</Nav.Link>
+                            <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300 rounded mx-2" href="home#experts">Blogs</Nav.Link>
+
+                            <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300  rounded" as={Link} to="/about">About</Nav.Link>
                         </Nav>
                         <Nav>
-                            <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300 rounded" as={Link} to="/about">About</Nav.Link>
-                           {
-                           user?
-                           <button className="btn btn-primary" onClick={handleSignOut}>Sign Out</button>
-                           :
-                           <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300 rounded" eventKey={2} as={Link} to="login">
-                                Login
-                            </Nav.Link>}
+                            {
+                                user ?
+                                    <button className="btn btn-primary" onClick={handleSignOut}>Sign Out</button>
+                                    :
+                                    <Nav.Link className="text-white hover:bg-purple-700 ease-in duration-300 rounded" eventKey={2} as={Link} to="login">
+                                        Login
+                                    </Nav.Link>}
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
